@@ -3,18 +3,19 @@ import { ThemedView } from "@/components/themed-view";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { 
-  ScrollView, 
-  StyleSheet, 
-  TouchableOpacity, 
-  View, 
+import {
   Linking,
-  useWindowDimensions
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import * as Haptics from 'expo-haptics';
 
 interface SectionProps {
   title: string;
@@ -29,7 +30,7 @@ const Section = ({ title, children, isExpanded, onPress }: SectionProps) => {
 
   return (
     <View style={[styles.section, { borderColor: colors.border }]}>
-      <TouchableOpacity 
+      <TouchableOpacity
         style={styles.sectionHeader}
         onPress={onPress}
         activeOpacity={0.7}
@@ -37,17 +38,13 @@ const Section = ({ title, children, isExpanded, onPress }: SectionProps) => {
         <ThemedText style={[styles.sectionTitle, { color: colors.tint }]}>
           {title}
         </ThemedText>
-        <MaterialIcons 
-          name={isExpanded ? "keyboard-arrow-up" : "keyboard-arrow-right"} 
-          size={24} 
+        <MaterialIcons
+          name={isExpanded ? "keyboard-arrow-up" : "keyboard-arrow-right"}
+          size={24}
           color={colors.tint}
         />
       </TouchableOpacity>
-      {isExpanded && (
-        <View style={styles.sectionContent}>
-          {children}
-        </View>
-      )}
+      {isExpanded && <View style={styles.sectionContent}>{children}</View>}
     </View>
   );
 };
@@ -57,7 +54,9 @@ export default function PrivacyScreen() {
   const colors = Colors[colorScheme];
   const router = useRouter();
   const { width } = useWindowDimensions();
-  const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({
+  const [expandedSections, setExpandedSections] = useState<{
+    [key: string]: boolean;
+  }>({
     introduction: true,
     dataCollection: false,
     dataUsage: false,
@@ -65,19 +64,19 @@ export default function PrivacyScreen() {
     security: false,
     yourRights: false,
     changes: false,
-    contact: false
+    contact: false,
   });
 
   const toggleSection = (section: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setExpandedSections(prev => ({
+    setExpandedSections((prev) => ({
       ...prev,
-      [section]: !prev[section]
+      [section]: !prev[section],
     }));
   };
 
   const openEmail = () => {
-    Linking.openURL('mailto:privacy@healthguard.com');
+    Linking.openURL("mailto:privacy@healthguard.com");
   };
 
   const scrollToSection = (section: string) => {
@@ -85,14 +84,18 @@ export default function PrivacyScreen() {
     // This is a simplified version - you might need to adjust based on your layout
     const sectionElement = document.getElementById(section);
     if (sectionElement) {
-      sectionElement.scrollIntoView({ behavior: 'smooth' });
+      sectionElement.scrollIntoView({ behavior: "smooth" });
     }
     toggleSection(section);
   };
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
-      <View style={[styles.headerContainer, { borderBottomColor: colors.border }]}>
+    <SafeAreaView
+      style={[styles.safeArea, { backgroundColor: colors.background }]}
+    >
+      <View
+        style={[styles.headerContainer, { borderBottomColor: colors.border }]}
+      >
         <TouchableOpacity
           onPress={() => router.back()}
           style={styles.backButton}
@@ -100,14 +103,17 @@ export default function PrivacyScreen() {
         >
           <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
-        <ThemedText type="title" style={[styles.headerTitle, { color: colors.text }]}>
+        <ThemedText
+          type="title"
+          style={[styles.headerTitle, { color: colors.text }]}
+        >
           Privacy Policy
         </ThemedText>
         <View style={{ width: 40 }} />
       </View>
 
       <ThemedView style={styles.container}>
-        <ScrollView 
+        <ScrollView
           style={styles.scrollView}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollContent}
@@ -117,7 +123,7 @@ export default function PrivacyScreen() {
               Your Privacy Matters
             </ThemedText>
             <ThemedText style={[styles.heroSubtitle, { color: colors.text }]}>
-              Last updated: {new Date().toLocaleDateString()}
+              Last updated: 24th September 2025
             </ThemedText>
           </View>
 
@@ -126,208 +132,256 @@ export default function PrivacyScreen() {
               Table of Contents
             </ThemedText>
             {Object.keys(expandedSections).map((section) => (
-              <TouchableOpacity 
+              <Pressable
                 key={section}
                 style={[styles.tocItem, { borderLeftColor: colors.tint }]}
-                onPress={() => scrollToSection(section)}
               >
                 <ThemedText style={[styles.tocText, { color: colors.text }]}>
-                  {section.split(/(?=[A-Z])/).map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                  {section
+                    .split(/(?=[A-Z])/)
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ")}
                 </ThemedText>
-              </TouchableOpacity>
+              </Pressable>
             ))}
           </View>
 
-          <Section 
-            title="1. Introduction" 
+          <Section
+            title="1. Introduction"
             isExpanded={expandedSections.introduction}
-            onPress={() => toggleSection('introduction')}
+            onPress={() => toggleSection("introduction")}
           >
             <ThemedText style={[styles.paragraph, { color: colors.text }]}>
-            Your privacy is important to us. This Privacy Policy explains how we
-            collect, use, disclose, and safeguard your information when you use
-            our Health App.
-          </ThemedText>
-          <ThemedText style={styles.subtitle}>
-            Information We Collect
-          </ThemedText>
-          <ThemedText style={styles.paragraph}>
-            We may collect personal information that you voluntarily provide to
-            us when you register with the App, express an interest in obtaining
-            information about us or our products and services, or otherwise when
-            you contact us.
-          </ThemedText>
-          <ThemedText style={styles.subtitle}>
-            How We Use Your Information
-          </ThemedText>
-          <ThemedText style={styles.paragraph}>
-            We use the information we collect or receive to provide you with the
-            services you request, to improve our services, and to communicate
-            with you.
+              Your privacy is important to us. This Privacy Policy explains how
+              we collect, use, disclose, and safeguard your information when you
+              use our Health App.
+            </ThemedText>
+            <ThemedText style={styles.subtitle}>
+              Information We Collect
+            </ThemedText>
+            <ThemedText style={styles.paragraph}>
+              We may collect personal information that you voluntarily provide
+              to us when you register with the App, express an interest in
+              obtaining information about us or our products and services, or
+              otherwise when you contact us.
+            </ThemedText>
+            <ThemedText style={styles.subtitle}>
+              How We Use Your Information
+            </ThemedText>
+            <ThemedText style={styles.paragraph}>
+              We use the information we collect or receive to provide you with
+              the services you request, to improve our services, and to
+              communicate with you.
             </ThemedText>
             <ThemedText style={[styles.paragraph, { color: colors.text }]}>
-              At HealthGuard, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our application.
+              At HealthGuard, we are committed to protecting your privacy and
+              ensuring the security of your personal information. This Privacy
+              Policy explains how we collect, use, disclose, and safeguard your
+              information when you use our application.
             </ThemedText>
           </Section>
 
-          <Section 
-            title="2. Information We Collect" 
+          <Section
+            title="2. Information We Collect"
             isExpanded={expandedSections.dataCollection}
-            onPress={() => toggleSection('dataCollection')}
+            onPress={() => toggleSection("dataCollection")}
           >
             <ThemedText style={[styles.paragraph, { color: colors.text }]}>
-              We collect various types of information to provide and improve our service to you, including:
+              We collect various types of information to provide and improve our
+              service to you, including:
             </ThemedText>
             <View style={styles.listItem}>
-              <View style={[styles.bulletPoint, { backgroundColor: colors.tint }]} />
+              <View
+                style={[styles.bulletPoint, { backgroundColor: colors.tint }]}
+              />
               <ThemedText style={[styles.listText, { color: colors.text }]}>
-                Personal Information: Name, email, date of birth, and contact details
+                Personal Information: Name, email, date of birth, and contact
+                details
               </ThemedText>
             </View>
             <View style={styles.listItem}>
-              <View style={[styles.bulletPoint, { backgroundColor: colors.tint }]} />
+              <View
+                style={[styles.bulletPoint, { backgroundColor: colors.tint }]}
+              />
               <ThemedText style={[styles.listText, { color: colors.text }]}>
-                Health Data: Medical history, symptoms, and treatment information
+                Health Data: Medical history, symptoms, and treatment
+                information
               </ThemedText>
             </View>
             <View style={styles.listItem}>
-              <View style={[styles.bulletPoint, { backgroundColor: colors.tint }]} />
+              <View
+                style={[styles.bulletPoint, { backgroundColor: colors.tint }]}
+              />
               <ThemedText style={[styles.listText, { color: colors.text }]}>
                 Usage Data: How you interact with our app and services
               </ThemedText>
             </View>
           </Section>
 
-          <Section 
-            title="3. How We Use Your Information" 
+          <Section
+            title="3. How We Use Your Information"
             isExpanded={expandedSections.dataUsage}
-            onPress={() => toggleSection('dataUsage')}
+            onPress={() => toggleSection("dataUsage")}
           >
             <ThemedText style={[styles.paragraph, { color: colors.text }]}>
               We use the information we collect for various purposes, including:
             </ThemedText>
             <View style={styles.listItem}>
-              <View style={[styles.bulletPoint, { backgroundColor: colors.tint }]} />
+              <View
+                style={[styles.bulletPoint, { backgroundColor: colors.tint }]}
+              />
               <ThemedText style={[styles.listText, { color: colors.text }]}>
                 To provide and maintain our service
               </ThemedText>
             </View>
             <View style={styles.listItem}>
-              <View style={[styles.bulletPoint, { backgroundColor: colors.tint }]} />
+              <View
+                style={[styles.bulletPoint, { backgroundColor: colors.tint }]}
+              />
               <ThemedText style={[styles.listText, { color: colors.text }]}>
                 To notify you about changes to our service
               </ThemedText>
             </View>
             <View style={styles.listItem}>
-              <View style={[styles.bulletPoint, { backgroundColor: colors.tint }]} />
+              <View
+                style={[styles.bulletPoint, { backgroundColor: colors.tint }]}
+              />
               <ThemedText style={[styles.listText, { color: colors.text }]}>
                 To provide customer support
               </ThemedText>
             </View>
             <View style={styles.listItem}>
-              <View style={[styles.bulletPoint, { backgroundColor: colors.tint }]} />
+              <View
+                style={[styles.bulletPoint, { backgroundColor: colors.tint }]}
+              />
               <ThemedText style={[styles.listText, { color: colors.text }]}>
                 To monitor the usage of our service
               </ThemedText>
             </View>
           </Section>
 
-          <Section 
-            title="4. Data Sharing and Disclosure" 
+          <Section
+            title="4. Data Sharing and Disclosure"
             isExpanded={expandedSections.dataSharing}
-            onPress={() => toggleSection('dataSharing')}
+            onPress={() => toggleSection("dataSharing")}
           >
             <ThemedText style={[styles.paragraph, { color: colors.text }]}>
-              We may share your personal information in the following situations:
+              We may share your personal information in the following
+              situations:
             </ThemedText>
             <View style={styles.listItem}>
-              <View style={[styles.bulletPoint, { backgroundColor: colors.tint }]} />
+              <View
+                style={[styles.bulletPoint, { backgroundColor: colors.tint }]}
+              />
               <ThemedText style={[styles.listText, { color: colors.text }]}>
                 With healthcare providers for treatment purposes
               </ThemedText>
             </View>
             <View style={styles.listItem}>
-              <View style={[styles.bulletPoint, { backgroundColor: colors.tint }]} />
+              <View
+                style={[styles.bulletPoint, { backgroundColor: colors.tint }]}
+              />
               <ThemedText style={[styles.listText, { color: colors.text }]}>
                 For legal compliance and law enforcement requests
               </ThemedText>
             </View>
             <View style={styles.listItem}>
-              <View style={[styles.bulletPoint, { backgroundColor: colors.tint }]} />
+              <View
+                style={[styles.bulletPoint, { backgroundColor: colors.tint }]}
+              />
               <ThemedText style={[styles.listText, { color: colors.text }]}>
                 With service providers who perform services on our behalf
               </ThemedText>
             </View>
           </Section>
 
-          <Section 
-            title="5. Data Security" 
+          <Section
+            title="5. Data Security"
             isExpanded={expandedSections.security}
-            onPress={() => toggleSection('security')}
+            onPress={() => toggleSection("security")}
           >
             <ThemedText style={[styles.paragraph, { color: colors.text }]}>
-              We implement appropriate technical and organizational measures to protect your personal information. However, no method of transmission over the Internet or electronic storage is 100% secure, and we cannot guarantee absolute security.
+              We implement appropriate technical and organizational measures to
+              protect your personal information. However, no method of
+              transmission over the Internet or electronic storage is 100%
+              secure, and we cannot guarantee absolute security.
             </ThemedText>
           </Section>
 
-          <Section 
-            title="6. Your Rights" 
+          <Section
+            title="6. Your Rights"
             isExpanded={expandedSections.yourRights}
-            onPress={() => toggleSection('yourRights')}
+            onPress={() => toggleSection("yourRights")}
           >
             <ThemedText style={[styles.paragraph, { color: colors.text }]}>
               You have the right to:
             </ThemedText>
             <View style={styles.listItem}>
-              <View style={[styles.bulletPoint, { backgroundColor: colors.tint }]} />
+              <View
+                style={[styles.bulletPoint, { backgroundColor: colors.tint }]}
+              />
               <ThemedText style={[styles.listText, { color: colors.text }]}>
                 Access, update, or delete your personal information
               </ThemedText>
             </View>
             <View style={styles.listItem}>
-              <View style={[styles.bulletPoint, { backgroundColor: colors.tint }]} />
+              <View
+                style={[styles.bulletPoint, { backgroundColor: colors.tint }]}
+              />
               <ThemedText style={[styles.listText, { color: colors.text }]}>
                 Object to our processing of your personal data
               </ThemedText>
             </View>
             <View style={styles.listItem}>
-              <View style={[styles.bulletPoint, { backgroundColor: colors.tint }]} />
+              <View
+                style={[styles.bulletPoint, { backgroundColor: colors.tint }]}
+              />
               <ThemedText style={[styles.listText, { color: colors.text }]}>
                 Request restriction of processing your personal information
               </ThemedText>
             </View>
             <View style={styles.listItem}>
-              <View style={[styles.bulletPoint, { backgroundColor: colors.tint }]} />
+              <View
+                style={[styles.bulletPoint, { backgroundColor: colors.tint }]}
+              />
               <ThemedText style={[styles.listText, { color: colors.text }]}>
                 Data portability
               </ThemedText>
             </View>
           </Section>
 
-          <Section 
-            title="7. Changes to This Privacy Policy" 
+          <Section
+            title="7. Changes to This Privacy Policy"
             isExpanded={expandedSections.changes}
-            onPress={() => toggleSection('changes')}
+            onPress={() => toggleSection("changes")}
           >
             <ThemedText style={[styles.paragraph, { color: colors.text }]}>
-              We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date.
+              We may update our Privacy Policy from time to time. We will notify
+              you of any changes by posting the new Privacy Policy on this page
+              and updating the "Last updated" date.
             </ThemedText>
           </Section>
 
-          <Section 
-            title="8. Contact Us" 
+          <Section
+            title="8. Contact Us"
             isExpanded={expandedSections.contact}
-            onPress={() => toggleSection('contact')}
+            onPress={() => toggleSection("contact")}
           >
             <ThemedText style={[styles.paragraph, { color: colors.text }]}>
-              If you have any questions about this Privacy Policy, please contact us:
+              If you have any questions about this Privacy Policy, please
+              contact us:
             </ThemedText>
-            <TouchableOpacity 
-              style={[styles.contactButton, { backgroundColor: colors.card, borderColor: colors.border }]}
+            <TouchableOpacity
+              style={[
+                styles.contactButton,
+                { backgroundColor: colors.card, borderColor: colors.border },
+              ]}
               onPress={openEmail}
             >
               <Ionicons name="mail" size={20} color={colors.tint} />
-              <ThemedText style={[styles.contactButtonText, { color: colors.tint }]}>
+              <ThemedText
+                style={[styles.contactButtonText, { color: colors.tint }]}
+              >
                 privacy@healthguard.com
               </ThemedText>
             </TouchableOpacity>
@@ -349,12 +403,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0,0,0,0.1)',
+    borderBottomColor: "rgba(0,0,0,0.1)",
   },
   backButton: {
     padding: 8,
@@ -362,15 +416,16 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 20,
-    fontWeight: '600',
-    position: 'absolute',
+    fontWeight: "600",
+    position: "absolute",
     left: 0,
     right: 0,
-    textAlign: 'center',
+    textAlign: "center",
     zIndex: 0,
   },
   container: {
     flex: 1,
+    paddingBottom: 80,
   },
   scrollView: {
     flex: 1,
@@ -381,13 +436,13 @@ const styles = StyleSheet.create({
   },
   hero: {
     marginBottom: 24,
-    alignItems: 'center',
+    alignItems: "center",
   },
   heroTitle: {
-    fontSize: 28,
-    fontWeight: '700',
+    fontSize: 26,
+    fontWeight: "700",
     marginBottom: 8,
-    textAlign: 'center',
+    textAlign: "center",
   },
   heroSubtitle: {
     fontSize: 16,
@@ -395,13 +450,13 @@ const styles = StyleSheet.create({
   },
   tocContainer: {
     marginBottom: 24,
-    backgroundColor: 'rgba(0,0,0,0.02)',
+    backgroundColor: "rgba(0,0,0,0.02)",
     borderRadius: 12,
     padding: 16,
   },
   tocTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 12,
   },
   tocItem: {
@@ -416,19 +471,19 @@ const styles = StyleSheet.create({
   section: {
     marginBottom: 16,
     borderRadius: 12,
-    overflow: 'hidden',
+    overflow: "hidden",
     borderWidth: 1,
   },
   sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 16,
-    backgroundColor: 'rgba(0,0,0,0.02)',
+    backgroundColor: "rgba(0,0,0,0.02)",
   },
   sectionTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
     flex: 1,
   },
   sectionContent: {
@@ -443,14 +498,14 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
     marginTop: 24,
     marginBottom: 12,
   },
   listItem: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 12,
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
   },
   bulletPoint: {
     width: 6,
@@ -466,8 +521,8 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   contactButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 12,
     borderRadius: 8,
     borderWidth: 1,
@@ -476,14 +531,14 @@ const styles = StyleSheet.create({
   contactButtonText: {
     marginLeft: 12,
     fontSize: 15,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   footer: {
     marginTop: 32,
     paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(0,0,0,0.1)',
-    alignItems: 'center',
+    borderTopColor: "rgba(0,0,0,0.1)",
+    alignItems: "center",
   },
   footerText: {
     fontSize: 12,

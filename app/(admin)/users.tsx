@@ -53,7 +53,7 @@ export default function UsersScreen() {
       setAllUsers(users || []);
       setDisplayedUsers(users || []);
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.log("Error fetching users:", error);
     } finally {
       setIsLoading(false);
       setRefreshing(false);

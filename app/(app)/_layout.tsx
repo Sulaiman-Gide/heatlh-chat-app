@@ -35,6 +35,22 @@ export default function AppLayout() {
   const colorScheme = useColorScheme();
   const colors = getThemeColors(colorScheme);
 
+  const tabBarStyle = {
+    backgroundColor: "#696c70",
+    position: "absolute" as const,
+    left: 20,
+    right: 20,
+    bottom: 40,
+    height: 80,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.05)",
+    overflow: "hidden" as const,
+    marginHorizontal: 15,
+    paddingTop: 8,
+    paddingHorizontal: 8,
+  };
+
   return (
     <Tabs
       screenOptions={{
@@ -42,19 +58,8 @@ export default function AppLayout() {
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarStyle: {
-          backgroundColor: "#1E293B",
-          position: "absolute",
-          left: 20,
-          right: 20,
-          bottom: 40,
-          height: 80,
-          borderRadius: 20,
-          borderWidth: 1,
-          borderColor: "rgba(255, 255, 255, 0.05)",
-          overflow: "hidden",
-          marginHorizontal: 15,
-          paddingTop: 8,
-          paddingHorizontal: 8,
+          ...tabBarStyle,
+          display: "flex",
         },
         tabBarItemStyle: {
           height: 80,
@@ -95,6 +100,19 @@ export default function AppLayout() {
               size={24}
             />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="chat-detail"
+        options={{
+          title: "Chat",
+          headerShown: false,
+          href: null,
+        }}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+          },
         }}
       />
       <Tabs.Screen

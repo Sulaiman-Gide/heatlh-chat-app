@@ -164,7 +164,7 @@ export default function EmergencyMapScreen() {
         );
       }
     } catch (error) {
-      console.error("Error opening maps:", error);
+      console.log("Error opening maps:", error);
     }
   };
 
