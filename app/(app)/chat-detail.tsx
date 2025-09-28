@@ -3,7 +3,7 @@ import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -14,6 +14,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useTabBar } from "@/contexts/TabBarContext";
+import { useFocusEffect } from "@react-navigation/native";
 
 interface Message {
   id: string;
@@ -65,21 +67,43 @@ export default function ChatDetail() {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme];
   const router = useRouter();
-  const { contactName = 'John Doe' } = useLocalSearchParams<{ contactName: string }>();
+  const { contactName = "John Doe" } = useLocalSearchParams<{
+    contactName: string;
+  }>();
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>(MESSAGES);
   const scrollViewRef = useRef<ScrollView>(null);
-  
+  const { hideTabBar, showTabBar } = useTabBar();
+  const isMounted = React.useRef(true);
+
   // Hide tab bar when this screen is focused
-  React.useLayoutEffect(() => {
-    router.setParams({ hideTabBar: 'true' });
+  useFocusEffect(
+    useCallback(() => {
+      console.log('ChatDetail: Hiding tab bar');
+      hideTabBar();
+      
+      // Ensure we show the tab bar when the component is unmounted
+      return () => {
+        if (isMounted.current) {
+          console.log('ChatDetail: Showing tab bar (from cleanup)');
+          showTabBar();
+        }
+      };
+    }, [hideTabBar, showTabBar])
+  );
+
+  // Handle component unmount
+  useEffect(() => {
+    console.log('ChatDetail mounted');
     return () => {
-      router.setParams({ hideTabBar: 'false' });
+      console.log('ChatDetail unmounted');
+      isMounted.current = false;
+      // Make one final attempt to show the tab bar
+      showTabBar();
     };
-  }, [router]);
+  }, [showTabBar]);
 
   const handleSend = () => {
-
     if (message.trim() === "") return;
 
     const newMessage: Message = {

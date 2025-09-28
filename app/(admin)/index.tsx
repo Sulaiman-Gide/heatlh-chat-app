@@ -232,7 +232,7 @@ export default function AdminDashboard() {
       <Ionicons
         name="chevron-forward"
         size={20}
-        color="#64748B"
+        color="#fff"
         style={{ marginLeft: "auto", alignSelf: "center" }}
       />
     </TouchableOpacity>
@@ -247,8 +247,8 @@ export default function AdminDashboard() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#0F172A" }}>
-      <StatusBar style="light" />
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#efefef" }}>
+      <StatusBar style="dark" />
       <ThemedView style={styles.container}>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -436,7 +436,7 @@ export default function AdminDashboard() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0F172A",
+    backgroundColor: "#efefef",
   },
   statsRow: {
     flexDirection: "row",
@@ -466,17 +466,17 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "700",
     marginBottom: 4,
-    color: "#efefef",
+    color: "#000",
   },
   subtitle: {
     fontSize: 15,
-    color: "#94A3B8",
+    color: "#212121",
     marginTop: 2,
   },
   lastUpdated: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#121d36",
+    backgroundColor: "#212121",
     borderColor: "#94A3B8",
     borderWidth: 1,
     paddingVertical: 6,
@@ -526,7 +526,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#F8FAFC",
+    color: "#000",
     marginBottom: 8,
   },
   divider: {
@@ -545,18 +545,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 12,
-    backgroundColor: "rgba(255, 255, 255, 0.05)",
+    backgroundColor: "rgba(255, 255, 255, 0.09)",
   },
   statValue: {
     fontSize: 24,
     fontWeight: "700",
-    color: "#F8FAFC",
+    color: "#000",
     marginBottom: 4,
     marginLeft: 6,
   },
   statTitle: {
     fontSize: 13,
-    color: "#94A3B8",
+    color: "#333",
     fontWeight: "500",
     marginLeft: 6,
   },
@@ -570,7 +570,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     padding: 16,
     borderRadius: 16,
-    backgroundColor: "#1E293B",
+    backgroundColor: "#696c70",
     borderWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.05)",
   },

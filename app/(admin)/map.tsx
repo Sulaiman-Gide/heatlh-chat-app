@@ -219,7 +219,7 @@ export default function EmergencyMapScreen() {
       };
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: "#0F172A" }]}>
+    <SafeAreaView style={[styles.safeArea]}>
       <ThemedView style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity
@@ -228,14 +228,12 @@ export default function EmergencyMapScreen() {
           >
             <View
               style={{
-                backgroundColor: "#142347",
+                backgroundColor: "#efefef",
                 padding: 12,
-                borderWidth: 1,
-                borderColor: "#18274a50",
                 borderRadius: 72,
               }}
             >
-              <Ionicons name="arrow-back" size={24} color={"#fff"} />
+              <Ionicons name="arrow-back" size={24} color={"#000"} />
             </View>
           </TouchableOpacity>
           <ThemedText type="title" style={styles.headerTitle}>
@@ -244,8 +242,6 @@ export default function EmergencyMapScreen() {
           <View
             style={{
               padding: 12,
-              borderWidth: 1,
-
               borderRadius: 72,
             }}
           />
@@ -347,11 +343,11 @@ export default function EmergencyMapScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#0F172A",
+    backgroundColor: "#fff",
   },
   container: {
     flex: 1,
-    backgroundColor: "#0F172A",
+    backgroundColor: "#fff",
   },
   header: {
     flexDirection: "row",
@@ -360,6 +356,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 8,
     paddingBottom: 16,
+    backgroundColor: "#ffffff",
+    borderBottomWidth: 1,
+    borderBottomColor: "#e9ecef",
   },
   backButton: {
     marginRight: 16,
@@ -367,6 +366,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: "600",
+    color: "#1a1a1a",
   },
   mapContainer: {
     flex: 1,
@@ -391,7 +391,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: "#0F172A",
+    backgroundColor: "#ffffff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
@@ -400,14 +400,20 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 10,
     elevation: 5,
+    borderWidth: 1,
+    borderColor: "#f1f3f5",
   },
   detailTitle: {
     fontSize: 18,
     marginBottom: 8,
+    color: "#1a1a1a",
+    fontWeight: "600",
   },
   detailText: {
-    color: "#666",
+    color: "#6c757d",
     marginBottom: 16,
+    fontSize: 14,
+    lineHeight: 20,
   },
   distanceContainer: {
     flexDirection: "row",
@@ -420,7 +426,8 @@ const styles = StyleSheet.create({
   },
   distanceText: {
     marginLeft: 8,
-    color: "#efefef",
+    color: "#333333",
+    fontSize: 14,
   },
   directionsButton: {
     backgroundColor: "#007AFF",
@@ -429,10 +436,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    shadowColor: "#007AFF",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 2,
   },
   directionsButtonText: {
     color: "white",
     marginLeft: 8,
     fontWeight: "600",
+    fontSize: 15,
   },
 });

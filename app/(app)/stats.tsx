@@ -84,8 +84,8 @@ export default function StatsScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor: "#efefef" }}>
       <ThemedView style={styles.container}>
         <View style={styles.header}>
-          <ThemedText style={{ fontSize: 26, fontWeight: "bold" }}>
-            Emergency Contacts
+          <ThemedText style={{ fontSize: 24, fontWeight: "bold" }}>
+            Contacts
           </ThemedText>
         </View>
 

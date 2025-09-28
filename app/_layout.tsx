@@ -10,6 +10,7 @@ import { Colors, ColorSchemeName, getThemeColors } from '@/constants/theme';
 import { useAuthStore } from '@/store/auth';
 import * as Linking from 'expo-linking';
 import { supabase } from '@/lib/supabase';
+import { TabBarProvider } from '@/contexts/TabBarContext';
 
 // This hook will protect the route access based on authentication state and admin status
 function useProtectedRoute(isAuthenticated: boolean) {
@@ -107,7 +108,7 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <TabBarProvider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack screenOptions={{
           headerShown: false,
@@ -115,6 +116,6 @@ export default function RootLayout() {
         }} />
         <Toast />
       </ThemeProvider>
-    </>
+    </TabBarProvider>
   );
 }

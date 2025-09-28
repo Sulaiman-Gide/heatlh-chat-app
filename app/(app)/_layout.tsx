@@ -2,17 +2,20 @@ import { HapticTab } from "@/components/haptic-tab";
 import { getThemeColors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { Tabs } from "expo-router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
+import { useTabBar } from "@/contexts/TabBarContext";
 
-const TabBarIcon = ({
-  focused,
-  source,
-  size = 28,
-}: {
+interface TabBarIconProps {
   focused: boolean;
   source: any;
   size?: number;
+}
+
+const TabBarIcon: React.FC<TabBarIconProps> = ({
+  focused,
+  source,
+  size = 28,
 }) => (
   <View style={styles.tabIconContainer}>
     <View style={[styles.iconWrapper]}>
@@ -35,6 +38,14 @@ export default function AppLayout() {
   const colorScheme = useColorScheme();
   const colors = getThemeColors(colorScheme);
 
+  const { isTabBarVisible } = useTabBar();
+  const [tabBarHeight, setTabBarHeight] = useState(80);
+  
+  // Debug: Log tab bar visibility changes
+  useEffect(() => {
+    console.log('Tab bar visibility changed:', isTabBarVisible);
+  }, [isTabBarVisible]);
+
   const tabBarStyle = {
     backgroundColor: "#696c70",
     position: "absolute" as const,
@@ -49,6 +60,13 @@ export default function AppLayout() {
     marginHorizontal: 15,
     paddingTop: 8,
     paddingHorizontal: 8,
+    display: isTabBarVisible ? 'flex' : 'none',
+    opacity: isTabBarVisible ? 1 : 0,
+    transform: [
+      { translateY: isTabBarVisible ? 0 : 20 },
+    ],
+    // Add transition for smooth animation
+    transition: 'opacity 300ms, transform 300ms',
   };
 
   return (
@@ -108,11 +126,6 @@ export default function AppLayout() {
           title: "Chat",
           headerShown: false,
           href: null,
-        }}
-        listeners={{
-          tabPress: (e) => {
-            e.preventDefault();
-          },
         }}
       />
       <Tabs.Screen

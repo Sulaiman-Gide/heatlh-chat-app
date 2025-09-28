@@ -216,7 +216,7 @@ export default function EmergenciesScreen() {
   };
 
   const renderEmergencyItem = ({ item }: { item: EmergencyReport }) => (
-    <View style={[styles.emergencyCard, { backgroundColor: "#142347" }]}>
+    <View style={[styles.emergencyCard]}>
       <View style={styles.emergencyHeader}>
         <View style={{ flex: 1 }}>
           <ThemedText
@@ -421,7 +421,7 @@ export default function EmergenciesScreen() {
   }
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: "#0F172A" }]}>
+    <SafeAreaView style={[styles.safeArea]}>
       <ThemedView style={[styles.container]}>
         <View style={styles.header}>
           <TouchableOpacity
@@ -430,14 +430,12 @@ export default function EmergenciesScreen() {
           >
             <View
               style={{
-                backgroundColor: "#142347",
+                backgroundColor: "#efefef",
                 padding: 12,
-                borderWidth: 1,
-                borderColor: "#18274a50",
                 borderRadius: 72,
               }}
             >
-              <Ionicons name="arrow-back" size={24} color={"#fff"} />
+              <Ionicons name="arrow-back" size={24} color={"#000"} />
             </View>
           </TouchableOpacity>
           <ThemedText type="title" style={styles.headerTitle}>
@@ -450,7 +448,7 @@ export default function EmergenciesScreen() {
             styles.searchContainer,
             {
               outlineWidth: 0,
-              backgroundColor: "#121d36",
+              backgroundColor: "#efefef",
               borderColor: "#94A3B8",
               borderWidth: 1,
             },
@@ -550,12 +548,12 @@ export default function EmergenciesScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#0F172A",
+    backgroundColor: "#f8f9fa",
   },
   container: {
     flex: 1,
-    backgroundColor: "#0F172A",
-    paddingBottom: 200,
+    backgroundColor: "#f8f9fa",
+    paddingBottom: 20,
   },
   header: {
     flexDirection: "row",
@@ -570,7 +568,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     flex: 1,
     marginRight: 24,
-    color: "#F1F5F9",
+    color: "#1a1a1a",
   },
   backButton: {
     padding: 4,
@@ -589,17 +587,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     margin: 16,
     borderRadius: 12,
-    backgroundColor: "white",
+    backgroundColor: "#ffffff",
     paddingHorizontal: 16,
     height: 50,
+    borderWidth: 1,
+    borderColor: "#e9ecef",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 1,
     },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 2,
   },
   searchIcon: {
     marginRight: 10,
@@ -609,7 +609,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: "100%",
     fontSize: 16,
-    color: "#efefef",
+    color: "#333333",
     fontFamily: "System",
   },
   clearButton: {
@@ -629,9 +629,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "#dee2e6",
+    borderColor: "#e9ecef",
     marginRight: 8,
-    backgroundColor: "white",
+    backgroundColor: "#ffffff",
   },
   activeFilter: {
     borderWidth: 0,
@@ -642,17 +642,24 @@ const styles = StyleSheet.create({
     color: "#6c757d",
   },
   activeFilterText: {
-    color: "white",
+    color: "#ffffff",
   },
   listContent: {
     padding: 16,
     paddingTop: 8,
   },
   emergencyCard: {
-    backgroundColor: "white",
+    backgroundColor: "#ffffff",
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+    borderWidth: 1,
+    borderColor: "#f1f3f5",
   },
   emergencyHeader: {
     flexDirection: "row",
@@ -661,13 +668,13 @@ const styles = StyleSheet.create({
   },
   userInfo: {
     fontSize: 16,
-    color: "#e2e8f0",
+    color: "#333333",
     marginTop: 4,
     fontWeight: "500",
   },
   userDetail: {
     fontSize: 14,
-    color: "#94a3b8",
+    color: "#6c757d",
     marginTop: 2,
   },
   statusBadge: {
@@ -684,13 +691,13 @@ const styles = StyleSheet.create({
   description: {
     marginTop: 8,
     lineHeight: 20,
-    color: "#212529",
+    color: "#333333",
     fontSize: 14,
   },
   metaContainer: {
     marginTop: 12,
     borderTopWidth: 1,
-    borderTopColor: "#e9ecef",
+    borderTopColor: "#f1f3f5",
     paddingTop: 12,
   },
   metaText: {

@@ -128,7 +128,7 @@ export default function UsersScreen() {
   };
 
   const renderUserItem = ({ item }: { item: User }) => (
-    <View style={[styles.userCard, { backgroundColor: "#142347" }]}>
+    <View style={[styles.userCard, { backgroundColor: "#696c70" }]}>
       <View style={styles.userInfo}>
         <View style={styles.userHeader}>
           <ThemedText type="subtitle" style={styles.userEmail}>
@@ -194,7 +194,7 @@ export default function UsersScreen() {
           <ThemedText
             style={[
               styles.toggleButtonText,
-              { color: item.is_active ? "#F44336" : "#4CAF50" },
+              { color: item.is_active ? "#f73b42" : "#efefef" },
             ]}
           >
             {item.is_active ? "Deactivate" : "Activate"}
@@ -215,7 +215,7 @@ export default function UsersScreen() {
   const router = useRouter();
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: "#0F172A" }]}>
+    <SafeAreaView style={[styles.safeArea]}>
       <ThemedView style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity
@@ -224,20 +224,23 @@ export default function UsersScreen() {
           >
             <View
               style={{
-                backgroundColor: "#142347",
+                backgroundColor: "#efefef",
                 padding: 12,
-                borderWidth: 1,
-                borderColor: "#18274a50",
                 borderRadius: 72,
               }}
             >
-              <Ionicons name="arrow-back" size={24} color={"#fff"} />
+              <Ionicons name="arrow-back" size={24} color={"#000"} />
             </View>
           </TouchableOpacity>
           <ThemedText type="title" style={styles.headerTitle}>
             Users
           </ThemedText>
-          <View style={styles.headerRight} />
+          <View
+            style={{
+              padding: 12,
+              borderRadius: 72,
+            }}
+          />
         </View>
 
         <View
@@ -245,7 +248,7 @@ export default function UsersScreen() {
             styles.searchContainer,
             {
               outlineWidth: 0,
-              backgroundColor: "#121d36",
+              backgroundColor: "#efefef",
               borderColor: "#94A3B8",
               borderWidth: 1,
             },
@@ -255,7 +258,7 @@ export default function UsersScreen() {
             <Ionicons
               name="search"
               size={20}
-              color={"#efefef"}
+              color={"#333"}
               style={styles.searchIcon}
             />
           </TouchableOpacity>
@@ -314,50 +317,52 @@ export default function UsersScreen() {
 }
 
 const styles = StyleSheet.create({
+  // Layout
   safeArea: {
     flex: 1,
-    backgroundColor: "#0F172A",
+    backgroundColor: "#f8f9fa",
   },
   container: {
     flex: 1,
-    backgroundColor: "#0F172A",
+    padding: 16,
+    backgroundColor: "#f8f9fa",
   },
   header: {
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
-    padding: 16,
-    paddingTop: 8,
+    alignItems: "center",
+    marginBottom: 24,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "rgba(0, 0, 0, 0.05)",
   },
   headerTitle: {
-    fontSize: 20,
-    fontWeight: "600",
-    textAlign: "center",
-    flex: 1,
-    marginRight: 24,
-    color: "#F1F5F9",
+    fontSize: 26,
+    fontWeight: "700",
+    color: "#1a1a1a",
+  },
+  headerRight: {
+    width: 24,
   },
   backButton: {
     padding: 4,
     zIndex: 1,
   },
-  headerRight: {
-    width: 24,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+
+  // Search
   searchContainer: {
+    marginBottom: 20,
     flexDirection: "row",
     alignItems: "center",
-
-    marginHorizontal: 16,
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    height: 48,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    backgroundColor: "#ffffff",
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
   searchIcon: {
     marginRight: 8,
@@ -365,27 +370,32 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    height: "100%",
+    color: "#333",
     fontSize: 16,
-    color: "#efefef",
+    padding: 6,
+    marginLeft: 8,
   },
   clearButton: {
     padding: 4,
   },
+
+  // User List
   listContent: {
-    padding: 16,
+    paddingVertical: 16,
     paddingTop: 0,
   },
+
+  // User Card
   userCard: {
-    backgroundColor: "#1E293B",
-    borderRadius: 12,
-    padding: 16,
     marginBottom: 12,
+    borderRadius: 16,
+    padding: 16,
+    backgroundColor: "#ffffff",
     borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.1)",
+    borderColor: "rgba(0, 0, 0, 0.05)",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 2,
   },
@@ -396,65 +406,103 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 8,
+    marginBottom: 12,
   },
   userEmail: {
-    color: "#F1F5F9",
+    color: "#fff",
     fontWeight: "600",
     fontSize: 16,
-    marginBottom: 4,
     flex: 1,
     marginRight: 8,
   },
   userName: {
-    color: "#94A3B8",
     fontSize: 14,
+    color: "#efefef",
     marginBottom: 8,
+    fontWeight: "500",
   },
   userMeta: {
     marginTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: "rgba(0, 0, 0, 0.05)",
+    paddingTop: 10,
   },
   statusBadge: {
-    paddingHorizontal: 8,
+    paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 4,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    borderRadius: 12,
+    alignSelf: "flex-start",
+    borderWidth: 1,
+    borderColor: "transparent",
   },
   statusText: {
-    color: "white",
+    fontSize: 12,
     fontWeight: "600",
-    fontSize: 12,
+    color: "#ffffff",
   },
-  metaText: {
-    fontSize: 12,
-    color: "#94A3B8",
-    marginBottom: 4,
-  },
+
+  // Toggle Button
   toggleButton: {
-    marginTop: 12,
-    padding: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
     borderRadius: 8,
+    borderWidth: 1.5,
+    marginTop: 10,
+    alignSelf: "flex-end",
+    minWidth: 100,
     alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.05)",
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.1)",
+    justifyContent: "center",
   },
   toggleButtonText: {
+    fontSize: 13,
     fontWeight: "600",
-    color: "#F1F5F9",
+    color: "#ffffff",
   },
+
+  // Empty State
   emptyContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 150,
     padding: 40,
-    backgroundColor: "#0F172A",
+    backgroundColor: "#ffffff",
+    borderRadius: 16,
+    marginTop: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
   emptyText: {
-    marginTop: 16,
-    color: "#94A3B8",
+    color: "#666",
     textAlign: "center",
-    opacity: 0.7,
+    marginTop: 16,
+    fontSize: 15,
+    lineHeight: 22,
+  },
+
+  // Loading State
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 40,
+    backgroundColor: "#ffffff",
+    borderRadius: 16,
+    marginTop: 20,
+  },
+  loadingText: {
+    color: "#666",
+    marginTop: 16,
+    fontSize: 15,
+    fontWeight: "500",
+  },
+  metaText: {
+    fontSize: 13,
+    color: "#efefef",
+    marginBottom: 6,
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
