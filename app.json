@@ -1,0 +1,74 @@
+{
+  "expo": {
+    "name": "health-chat",
+    "slug": "health-chat",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "healthapp",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/images/android-icon-background.jpg",
+        "backgroundImage": "./assets/images/android-icon-background.jpg",
+        "monochromeImage": "./assets/images/android-icon-background.jpg"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "ACTIVITY_RECOGNITION",
+        "FOREGROUND_SERVICE",
+        "RECEIVE_BOOT_COMPLETED",
+        "WAKE_LOCK"
+      ],
+      "package": "com.dev_gide.healthchat"
+    },
+    "web": {
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "backgroundColor": "#000000"
+          }
+        }
+      ],
+      [
+        "expo-sensors",
+        {
+          "motionPermission": "Allow Health App to access your motion activity and step count."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/bell.png",
+          "color": "#ffffff",
+          "sounds": []
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "13a9627e-c139-4c23-a267-dd74e008d5f3"
+      }
+    }
+  }
+}
