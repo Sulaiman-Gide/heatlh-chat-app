@@ -179,7 +179,7 @@ export default function EditProfileScreen() {
                 <TextInput
                   style={[
                     styles.input,
-                    { color: colors.text, marginTop: 34, marginLeft: 3 },
+                    { color: colors.text, marginTop: 0, marginLeft: 3 },
                   ]}
                   value={seasonalAllergies}
                   onChangeText={setSeasonalAllergies}
@@ -196,7 +196,7 @@ export default function EditProfileScreen() {
                 <TextInput
                   style={[
                     styles.input,
-                    { color: colors.text, marginTop: 34, marginLeft: 3 },
+                    { color: colors.text, marginTop: 0, marginLeft: 3 },
                   ]}
                   value={medications}
                   onChangeText={setMedications}

@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingBottom: 400,
+    paddingBottom: 40,
   },
   header: {
     flexDirection: "row" as const,
@@ -111,8 +111,12 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
-    maxHeight: 100,
-    paddingVertical: 8,
+    maxHeight: 50,
+    paddingVertical: 14,
+    paddingHorizontal: 14,
+    borderWidth: 2,
+    borderRadius: 20,
+    borderColor: "#c0bbbbff",
   },
   inputButton: {
     width: 36,
@@ -263,7 +267,11 @@ export default function ChatDetail() {
       <View
         style={[
           styles.header,
-          { backgroundColor: colors.card, borderBottomColor: colors.border },
+          {
+            backgroundColor: colors.card,
+            borderBottomColor: colors.border,
+            paddingTop: 50,
+          },
         ]}
       >
         <View style={styles.headerLeft}>
@@ -279,11 +287,7 @@ export default function ChatDetail() {
       </View>
 
       {/* Messages */}
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
-      >
+      <KeyboardAvoidingView style={styles.container}>
         <ScrollView
           ref={scrollViewRef}
           style={styles.messagesContainer}

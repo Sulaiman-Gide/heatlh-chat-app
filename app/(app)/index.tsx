@@ -9,7 +9,6 @@ import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Location from "expo-location";
-import * as Notifications from "expo-notifications";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { debounce } from "lodash";
@@ -90,17 +89,6 @@ interface HealthMetricParams {
   goal: number;
   unit: string;
 }
-
-// Configure notifications
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
 
 const HealthCard = ({
   title,
@@ -247,7 +235,7 @@ export default function HomeScreen() {
             } ${address[0].city || ""} ${address[0].region || ""}`.trim();
           }
         } catch (error) {
-          console.log("Error getting address for emergency report:", error);
+          console.warn("Error getting address for emergency report:", error);
           // Use coordinates as fallback
           formattedAddress = `Location: ${location.coords.latitude.toFixed(
             4
@@ -260,7 +248,7 @@ export default function HomeScreen() {
         "Help is on the way! Your location and medical information have been shared with emergency contacts."
       );
     } catch (error) {
-      console.error("Error sending emergency report:", error);
+      console.log("Error sending emergency report:", error);
       Alert.alert(
         "Error",
         "Failed to send emergency report. Please try again."
@@ -330,7 +318,9 @@ export default function HomeScreen() {
         console.warn("Reverse geocoding error:", geocodeError);
         // Don't throw the error, just log it
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error getting location:", error);
+    }
   }, [geocodeCache, lastGeocodeTime]);
 
   // Debounce the location updates
@@ -372,7 +362,7 @@ export default function HomeScreen() {
     try {
       await AsyncStorage.removeItem("healthMetrics");
       await AsyncStorage.removeItem("healthMetricsDate");
-      // console.log("Stored metrics cleared successfully");
+      console.log("Stored metrics cleared successfully");
     } catch (error) {
       console.error("Error clearing stored metrics:", error);
     }
@@ -679,7 +669,7 @@ export default function HomeScreen() {
         }));
       }
     } catch (error) {
-      //console.log("Error in fetchHealthMetrics:", error);
+      console.log("Error in fetchHealthMetrics:", error);
     } finally {
       setLoading(false);
     }
@@ -743,7 +733,7 @@ export default function HomeScreen() {
           }
         );
       } catch (error) {
-        //console.log("Error getting location:", error);
+        console.error("Error getting location:", error);
       }
     };
 
@@ -804,8 +794,8 @@ export default function HomeScreen() {
   }, [session?.user?.id, fetchHealthMetrics]);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#efefef" }}>
-      <StatusBar style="dark" />
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#151718" }}>
+      <StatusBar style="light" />
       <ThemedView style={styles.container}>
         <ScrollView
           style={styles.scrollView}
@@ -982,7 +972,7 @@ const styles = StyleSheet.create({
     marginBottom: 80,
   },
   emergencyButtonText: {
-    color: "#efefef",
+    color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
@@ -993,7 +983,7 @@ const styles = StyleSheet.create({
   // Main container styles
   container: {
     flex: 1,
-    backgroundColor: "#efefef",
+    backgroundColor: "#151718",
   },
   scrollView: {
     flex: 1,
@@ -1014,16 +1004,16 @@ const styles = StyleSheet.create({
   greeting: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#212121",
+    color: "#9CA3AF",
     marginBottom: 2,
   },
   locationText: {
     fontSize: 14,
-    color: "#333",
+    color: "#6B7280",
   },
   username: {
     fontSize: 24,
-    color: "#212121",
+    color: "#efefef",
   },
 
   // Avatar styles
@@ -1047,7 +1037,7 @@ const styles = StyleSheet.create({
   },
   healthCard: {
     width: "48%",
-    backgroundColor: "#efefef",
+    backgroundColor: "#1F2937",
     borderRadius: 12,
     padding: 14,
     marginBottom: 16,
@@ -1061,17 +1051,17 @@ const styles = StyleSheet.create({
   healthCardTitle: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#212121",
+    color: "#fff",
   },
   healthCardValue: {
     fontSize: 22,
     fontWeight: "bold",
-    color: "#212121",
+    color: "#fff",
     marginVertical: 10,
   },
   healthCardUnit: {
     fontSize: 12,
-    color: "#333",
+    color: "#9CA3AF",
   },
   healthCardIcon: {
     fontSize: 22,

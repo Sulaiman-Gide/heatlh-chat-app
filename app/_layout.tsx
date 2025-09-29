@@ -1,19 +1,22 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack, useRouter, useSegments } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
-import 'react-native-reanimated';
-import Toast from 'react-native-toast-message';
-import { useColorScheme } from '@/hooks/use-color-scheme';
-import { Colors, ColorSchemeName, getThemeColors } from '@/constants/theme';
-import { useAuthStore } from '@/store/auth';
-import * as Linking from 'expo-linking';
-import { supabase } from '@/lib/supabase';
-import { TabBarProvider } from '@/contexts/TabBarContext';
+import { getThemeColors } from "@/constants/theme";
+import { TabBarProvider } from "@/contexts/TabBarContext";
+import { useColorScheme } from "@/hooks/use-color-scheme";
+import { supabase } from "@/lib/supabase";
+import { useAuthStore } from "@/store/auth";
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+import * as Linking from "expo-linking";
+import { Stack, useRouter, useSegments } from "expo-router";
+import { useEffect } from "react";
+import { ActivityIndicator, View } from "react-native";
+import "react-native-reanimated";
+import Toast from "react-native-toast-message";
 
-// This hook will protect the route access based on authentication state and admin status
-function useProtectedRoute(isAuthenticated: boolean) {
+// AuthGuard component to handle protected route logic after layout is mounted
+function AuthGuard({ isAuthenticated }: { isAuthenticated: boolean }) {
   const segments = useSegments();
   const router = useRouter();
   const { isLoading, isAdmin } = useAuthStore();
@@ -21,29 +24,32 @@ function useProtectedRoute(isAuthenticated: boolean) {
   useEffect(() => {
     if (isLoading) return;
 
-    const inAuthGroup = segments[0] === '(auth)';
-    const inAdminGroup = segments[0] === '(admin)';
-    const inAppGroup = segments[0] === '(app)';
+    const inAuthGroup = segments[0] === "(auth)";
+    const inAdminGroup = segments[0] === "(admin)";
+    const inAppGroup = segments[0] === "(app)";
 
-    if (!isAuthenticated) {
-      // If not authenticated, redirect to login unless already there
-      if (!inAuthGroup) {
-        router.replace('/(auth)/login');
+    setTimeout(() => {
+      if (!isAuthenticated) {
+        // If not authenticated, redirect to login unless already there
+        if (!inAuthGroup) {
+          router.replace("/(auth)/login");
+        }
+      } else {
+        // Handle authenticated users
+        if (inAuthGroup) {
+          // If on auth pages, redirect based on admin status
+          router.replace(isAdmin ? "/(admin)" : "/(app)");
+        } else if (inAdminGroup && !isAdmin) {
+          // If trying to access admin area without admin rights, redirect to app
+          router.replace("/(app)");
+        } else if (inAppGroup && isAdmin && segments.length === 1) {
+          // If admin is on the main app screen, redirect to admin dashboard
+          router.replace("/(admin)");
+        }
       }
-    } else {
-      // Handle authenticated users
-      if (inAuthGroup) {
-        // If on auth pages, redirect based on admin status
-        router.replace(isAdmin ? '/(admin)' : '/(app)');
-      } else if (inAdminGroup && !isAdmin) {
-        // If trying to access admin area without admin rights, redirect to app
-        router.replace('/(app)');
-      } else if (inAppGroup && isAdmin && segments.length === 1) {
-        // If admin is on the main app screen, redirect to admin dashboard
-        router.replace('/(admin)');
-      }
-    }
+    }, 0);
   }, [isAuthenticated, segments, isLoading, isAdmin]);
+  return null;
 }
 
 export default function RootLayout() {
@@ -57,9 +63,9 @@ export default function RootLayout() {
   useEffect(() => {
     const handleDeepLink = async (event: { url: string }) => {
       const url = new URL(event.url);
-      const accessToken = url.searchParams.get('access_token');
-      const refreshToken = url.searchParams.get('refresh_token');
-      const type = url.searchParams.get('type');
+      const accessToken = url.searchParams.get("access_token");
+      const refreshToken = url.searchParams.get("refresh_token");
+      const type = url.searchParams.get("type");
 
       if (accessToken && refreshToken) {
         const { data, error } = await supabase.auth.setSession({
@@ -69,18 +75,18 @@ export default function RootLayout() {
 
         if (!error && data.session) {
           useAuthStore.getState().setSession(data.session);
-          
-          if (type === 'recovery') {
-            router.replace('/(auth)/reset-password');
+
+          if (type === "recovery") {
+            router.replace("/(auth)/reset-password");
           } else {
-            router.replace('/(app)');
+            router.replace("/(app)");
           }
         }
       }
     };
 
-    const subscription = Linking.addEventListener('url', handleDeepLink);
-    
+    const subscription = Linking.addEventListener("url", handleDeepLink);
+
     // Check if the app was opened with a deep link
     const getInitialURL = async () => {
       const initialUrl = await Linking.getInitialURL();
@@ -88,20 +94,18 @@ export default function RootLayout() {
         handleDeepLink({ url: initialUrl });
       }
     };
-    
+
     getInitialURL();
-    
+
     return () => {
       subscription.remove();
     };
   }, []);
 
-  useProtectedRoute(isAuthenticated);
-
   if (isAuthLoading) {
     const colors = getThemeColors(colorScheme);
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size="large" color={colors.tint} />
       </View>
     );
@@ -109,11 +113,14 @@ export default function RootLayout() {
 
   return (
     <TabBarProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack screenOptions={{
-          headerShown: false,
-          animation: 'fade',
-        }} />
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            animation: "fade",
+          }}
+        />
+        <AuthGuard isAuthenticated={isAuthenticated} />
         <Toast />
       </ThemeProvider>
     </TabBarProvider>
