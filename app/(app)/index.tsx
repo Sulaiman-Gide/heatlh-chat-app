@@ -372,7 +372,7 @@ export default function HomeScreen() {
     try {
       await AsyncStorage.removeItem("healthMetrics");
       await AsyncStorage.removeItem("healthMetricsDate");
-      console.log("Stored metrics cleared successfully");
+      // console.log("Stored metrics cleared successfully");
     } catch (error) {
       console.error("Error clearing stored metrics:", error);
     }
@@ -679,7 +679,7 @@ export default function HomeScreen() {
         }));
       }
     } catch (error) {
-      console.log("Error in fetchHealthMetrics:", error);
+      //console.log("Error in fetchHealthMetrics:", error);
     } finally {
       setLoading(false);
     }
@@ -743,7 +743,7 @@ export default function HomeScreen() {
           }
         );
       } catch (error) {
-        console.log("Error getting location:", error);
+        //console.log("Error getting location:", error);
       }
     };
 

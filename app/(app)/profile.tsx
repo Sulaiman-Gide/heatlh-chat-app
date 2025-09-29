@@ -61,7 +61,7 @@ const clearStoredMetrics = async () => {
   try {
     await AsyncStorage.removeItem("healthMetrics");
     await AsyncStorage.removeItem("healthMetricsDate");
-    console.log("Stored metrics cleared successfully");
+    //console.log("Stored metrics cleared successfully");
     return true;
   } catch (error) {
     console.error("Error clearing stored metrics:", error);
