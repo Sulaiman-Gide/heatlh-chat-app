@@ -21,7 +21,7 @@ export default function UserListScreen({
   onSelectUser,
   filterUser,
 }: {
-  onSelectUser: (userId: string) => void;
+  onSelectUser: (userId: string, contactName: string) => void;
   filterUser?: (user: User) => boolean;
 }) {
   const [users, setUsers] = useState<User[]>([]);
@@ -34,7 +34,7 @@ export default function UserListScreen({
         .from("profiles")
         .select("id, full_name, avatar_url");
       if (error) {
-        console.error("Error fetching users:", error);
+        //console.error("Error fetching users:", error);
         setUsers([]);
       } else {
         setUsers(data || []);
@@ -106,7 +106,8 @@ export default function UserListScreen({
                 item.id,
                 item.full_name
               );
-              onSelectUser(item.id);
+              // Pass both id and name to onSelectUser
+              onSelectUser(item.id, item.full_name || item.id);
             }}
           >
             <View style={styles.row}>

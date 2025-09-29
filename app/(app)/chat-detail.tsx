@@ -299,56 +299,77 @@ export default function ChatDetail() {
             messages.map((msg) => {
               const isMe = msg.sender_id === user?.id;
               return (
-                <View
-                  key={msg.id}
-                  style={[
-                    styles.messageBubble,
-                    isMe
-                      ? [
-                          styles.messageBubbleRight,
-                          { backgroundColor: colors.tint + "20" },
-                        ]
-                      : [
-                          styles.messageBubbleLeft,
-                          { backgroundColor: colors.card },
-                        ],
-                  ]}
-                >
+                <View>
+                  {/* Sender name */}
                   <ThemedText
-                    style={[
-                      styles.messageText,
-                      {
-                        color: colors.text,
-                        textAlign: isMe ? "right" : "left",
-                      },
-                    ]}
+                    style={{
+                      fontSize: 12,
+                      color: isMe ? colors.text + "80" : colors.text,
+                      marginBottom: 0,
+                      marginRight: isMe ? 5 : 0,
+                      marginLeft: isMe ? 0 : 5,
+                      textAlign: isMe ? "right" : "left",
+                      fontWeight: "600",
+                    }}
                   >
-                    {msg.content}
+                    {isMe ? "You" : contactName}
                   </ThemedText>
+
                   <View
+                    key={msg.id}
                     style={[
-                      styles.messageTimeContainer,
-                      { justifyContent: isMe ? "flex-end" : "flex-start" },
+                      styles.messageBubble,
+                      isMe
+                        ? [
+                            styles.messageBubbleRight,
+                            { backgroundColor: colors.tint + "20" },
+                          ]
+                        : [
+                            styles.messageBubbleLeft,
+                            {
+                              backgroundColor: "#f1f3f6",
+                              borderWidth: 1,
+                              borderColor: colors.border,
+                            },
+                          ],
                     ]}
                   >
                     <ThemedText
                       style={[
-                        styles.messageTime,
-                        { color: colors.text + "80" },
+                        styles.messageText,
+                        {
+                          color: colors.text,
+                          textAlign: isMe ? "right" : "left",
+                        },
                       ]}
                     >
-                      {msg.created_at
-                        ? new Date(msg.created_at).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })
-                        : ""}
+                      {msg.content}
                     </ThemedText>
-                    {isMe && (
-                      <View style={styles.messageStatus}>
-                        {renderMessageStatus(msg.status)}
-                      </View>
-                    )}
+                    <View
+                      style={[
+                        styles.messageTimeContainer,
+                        { justifyContent: isMe ? "flex-end" : "flex-start" },
+                      ]}
+                    >
+                      <ThemedText
+                        style={[
+                          styles.messageTime,
+                          { color: colors.text + "80" },
+                        ]}
+                      >
+                        {msg.created_at
+                          ? new Date(msg.created_at).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
+                          : ""}
+                      </ThemedText>
+                      {isMe && (
+                        <View style={styles.messageStatus}>
+                          {renderMessageStatus(msg.status)}
+                        </View>
+                      )}
+                    </View>
                   </View>
                 </View>
               );

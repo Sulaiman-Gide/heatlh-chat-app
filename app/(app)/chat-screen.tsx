@@ -105,10 +105,10 @@ const ChatScreen = () => {
         setShowUserList(false);
       }
     } catch (error) {
-      console.error(
-        "[fetchConversations] Error fetching conversations:",
-        error
-      );
+      //console.error(
+      //  "[fetchConversations] Error fetching conversations:",
+      //   error
+      // );
       setConversations([]);
       setShowUserList(true);
     } finally {
@@ -183,34 +183,39 @@ const ChatScreen = () => {
   }, [router]);
 
   const handleSelectUser = useCallback(
-    async (userId: string) => {
-      console.log("[handleSelectUser] Clicked userId:", userId);
+    async (userId: string, contactName?: string) => {
+      console.log("[handleSelectUser] Clicked userId:", userId, contactName);
       if (!user?.id) {
         console.log("[handleSelectUser] No user.id, aborting");
         return;
       }
       try {
-        // Find the selected user's name from the user list
-        let selectedUser = null;
-        if (typeof conversations !== "undefined" && conversations.length > 0) {
-          selectedUser = conversations
+        let name = contactName;
+        if (
+          !name &&
+          typeof conversations !== "undefined" &&
+          conversations.length > 0
+        ) {
+          const selectedUser = conversations
             .map((c) => c.other_user)
             .find((u) => u.id === userId);
+          name = selectedUser?.full_name || selectedUser?.email || "Chat";
         }
-        // If not found in conversations, fallback to userId
-        const contactName =
-          selectedUser?.full_name || selectedUser?.email || "Chat";
         const conversationId = await chatService.getOrCreateConversation(
           user.id,
           userId
         );
-        console.log("[handleSelectUser] Got conversationId:", conversationId);
+        console.log(
+          "[handleSelectUser] Got conversationId:",
+          conversationId,
+          name
+        );
         router.push({
           pathname: "/(app)/chat-detail",
-          params: { id: conversationId, contactId: userId, contactName },
+          params: { id: conversationId, contactId: userId, contactName: name },
         });
       } catch (error) {
-        console.error("Error creating conversation:", error);
+        //console.error("Error creating conversation:", error);
       }
     },
     [user?.id, router, conversations]
@@ -222,7 +227,7 @@ const ChatScreen = () => {
       const date = new Date(dateString);
       return formatDistanceToNow(date, { addSuffix: true });
     } catch (error) {
-      console.error("Error formatting date:", error);
+      //console.error("Error formatting date:", error);
       return "";
     }
   };
